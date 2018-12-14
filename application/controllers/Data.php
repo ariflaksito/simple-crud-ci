@@ -68,12 +68,29 @@ class Data extends CI_Controller {
 		$data['title'] = 'Edit Member';
 
 		if($this->input->post()){
-			$add = $this->members->update($id, $this->input->post());
-			if($add['sts']){
-				$data['ok'] = $add['msg']; 
-			}else{
-				$data['error'] = $add['msg'];
-			}
+
+			$config['upload_path']          = './uploads/';
+            $config['allowed_types']        = 'gif|jpg|png';
+            $config['max_size']             = 100;
+            $config['max_width']            = 1024;
+            $config['max_height']           = 768;
+
+            $this->load->library('upload', $config);
+            if ( !$this->upload->do_upload('foto')){
+            	$data['error'] = $this->upload->display_errors();	
+            }else{
+            	$newfile = $this->upload->data();
+            	$post = $this->input->post();
+            	$post['foto'] = $newfile['file_name'];
+
+            	$add = $this->members->update($id, $post);
+				if($add['sts']){
+					$data['ok'] = $add['msg']; 
+				}else{
+					$data['error'] = $add['msg'];
+				}	
+            }	
+			
 		}
 
 		$data['member'] = $this->members->get($id);

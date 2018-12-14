@@ -5,6 +5,7 @@
 			<th>No</th>
 			<th>Fullname</th>
 			<th>Email</th>
+			<th>Foto</th>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -17,6 +18,11 @@
 			<td><?php echo $no?></td>
 			<td><?php echo $d['fullname']?></td>
 			<td><?php echo $d['email'] ?></td>
+			<td>
+				<?php if($d['foto']!=null):?>
+				<img src="uploads/<?php echo $d['foto']?>" width="60"/>
+				<?php endif?>
+			</td>
 			<td><a href="<?php echo site_url()?>/data/edit/<?php echo $d['id']?>" class='btn btn-warning'>Edit</a></td>
 			<td><a href="<?php echo site_url()?>/data/detail/<?php echo $d['id']?>" class='btn btn-info'>Detail</a></td>
 			<td><a href="<?php echo site_url()?>/data/del/<?php echo $d['id']?>" class='btn btn-danger'>Delete</a></td>
