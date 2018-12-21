@@ -1,4 +1,21 @@
-<a href="<?php echo site_url()?>/data/add" class="btn btn-success">Add Data</a>
+<div class="row">
+	<div class="col-md-6">
+		<a href="<?php echo site_url()?>/data/add" class="btn btn-success">Add Data</a>
+	</div>
+	<div class="col-md-6">
+		<form action="" method="post" enctype="multipart/form-data" class="form-inline">
+		<label>File Csv</label>	
+		<div class="form-group">
+			<input type="file" class="form-control" name="csv">
+		</div>
+		<button id="save" class="btn btn-primary">Import Csv</button>
+		</form>
+	</div>
+</div>	
+
+<?php if(isset($ok)):?><div class="alert alert-info"><?php echo $ok?></div><?php endif;?>
+<?php if(isset($error)):?><div class="alert alert-danger"><?php echo $error?></div><?php endif;?>
+
 <table class="table table-striped">
 	<thead>
 		<tr>

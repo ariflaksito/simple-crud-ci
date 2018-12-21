@@ -5,6 +5,42 @@ class Data extends CI_Controller {
 	public function index()
 	{
 		$this->load->model('members');
+		$file = $_FILES;
+
+		if(!empty($file)){
+
+			$config['upload_path']          = './uploads/';
+            $config['allowed_types']        = 'csv';
+            $config['max_size']             = 100;
+
+            $this->load->library('upload', $config);
+            if ( !$this->upload->do_upload('csv')){
+            	$data['error'] = $this->upload->display_errors();	
+            }else{
+            	$newfile = $this->upload->data();
+           
+				$handle = fopen($config['upload_path'].$newfile['file_name'], "r");
+				$i = 1; $data['ok'] = ""; $data['error'] = "";
+				while (($dt = fgetcsv($handle, 1000, ",")) !== FALSE) {
+					// proses simpan ke db
+					$in['fullname'] = $dt[0];
+					$in['email'] = $dt[1];
+					$in['company'] = $dt[2];
+					$in['address'] = $dt[3];
+					$in['city'] = $dt[4];
+					$in['country'] = $dt[5];	
+
+					$add = $this->members->add($in);
+					if($add['sts']){
+						$data['ok'] .= "Baris ke ".$i.": ".$add['msg']."<br />"; 
+					}else{
+						$data['error'] .= "Baris ke ".$i.": ".$add['msg']."<br />";
+					}
+					$i++;	
+				}
+				fclose($handle);
+            }
+        }
 		
 		$data['view'] = 'table';
 		$data['title'] = 'Data Members';
